@@ -2,17 +2,18 @@
 
 
 // Declare node_module dependencies
-var express 	= require('express');
+var express 	= require('express'),
+    hbs 		= require('hbs');
 
 // Declare instance of Express
 var app			= express();
 var port 		= process.env.PORT || 3000;
 
 app.configure(function() {
-
 		// set up our express application
 		app.use(express.logger('dev')); // log every request to the console
         app.use(express.static(__dirname + '/app/public')); //Serves up static content (assets)
+        app.engine('html', hbs.__express);
         app.set('views', __dirname + '/app/views'); //Location of Views/Markup
         app.set('view engine', 'html');
         app.use(express.cookieParser()); // read cookies (needed for auth)
@@ -21,7 +22,7 @@ app.configure(function() {
 });
 
 // Routes
-require('./app/routes.js')(app, passport);
+require('./app/routes.js')(app);
 
 // Launch
 app.listen(port);
